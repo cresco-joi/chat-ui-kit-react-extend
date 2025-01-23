@@ -324,8 +324,24 @@ function MessageListFunc(props, ref) {
 
   // Return object with public Api
   useImperativeHandle(ref, () => ({
+    // `scrollTop` プロパティのゲッターとセッター
+        get scrollTop() {
+          return msgListRef.current ? msgListRef.current.scrollTop : 0;
+        },
+        set scrollTop(value) {
+          if (msgListRef.current) {
+            msgListRef.current.scrollTop = value;
+          }
+        },
     scrollToBottom,
   }));
+
+    // スクロールイベントを親コンポーネントに通知
+    const handleScroll = () => {
+      if (onScroll) {
+        onScroll();
+      }
+    };
 
   return <MessageListInner ref={msgListRef} {...props} />;
 }
